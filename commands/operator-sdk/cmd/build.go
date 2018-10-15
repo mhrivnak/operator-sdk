@@ -133,9 +133,7 @@ func verifyTestManifest(image string) {
 }
 
 const (
-	build      = "./build/build.sh"
-	configYaml = "./config/config.yaml"
-	mainGo     = "./cmd/manager/main.go"
+	mainGo = "./cmd/manager/main.go"
 )
 
 func buildFunc(cmd *cobra.Command, args []string) {

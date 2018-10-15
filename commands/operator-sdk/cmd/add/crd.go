@@ -38,10 +38,10 @@ func NewAddCrdCmd() *cobra.Command {
 	crdCmd := &cobra.Command{
 		Use:   "crd",
 		Short: "Adds a custom resource definition (CRD) and the custom resource (CR) files",
-		Long: `The operator-sdk generate command will create a custom resource definition (CRD) and the custom resource (CR) files for the specified api-version and kind.
+		Long: `The operator-sdk add crd command will create a custom resource definition (CRD) and the custom resource (CR) files for the specified api-version and kind.
 
-Generated CRD filename: <project-name>/deploy/<group>_<version>_<kind>_crd.yaml
-Generated CR  filename: <project-name>/deploy/<group>_<version>_<kind>_cr.yaml
+Generated CRD filename: <project-name>/deploy/crds/<group>_<version>_<kind>_crd.yaml
+Generated CR  filename: <project-name>/deploy/crds/<group>_<version>_<kind>_cr.yaml
 
 	<project-name>/deploy path must already exist
 	--api-version and --kind are required flags to generate the new operator application.
@@ -75,12 +75,8 @@ func crdFunc(cmd *cobra.Command, args []string) {
 	}
 	s := scaffold.Scaffold{}
 	err = s.Execute(cfg,
-		&scaffold.Crd{
-			Resource: resource,
-		},
-		&scaffold.Cr{
-			Resource: resource,
-		},
+		&scaffold.Crd{Resource: resource},
+		&scaffold.Cr{Resource: resource},
 	)
 
 	if err != nil {

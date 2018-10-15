@@ -20,9 +20,8 @@ import (
 	"log"
 	"os"
 	"os/exec"
-	"strings"
-
 	"path/filepath"
+	"strings"
 
 	"github.com/operator-framework/operator-sdk/commands/operator-sdk/cmd/cmdutil"
 	"github.com/operator-framework/operator-sdk/pkg/test"

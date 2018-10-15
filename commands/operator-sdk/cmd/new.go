@@ -225,7 +225,7 @@ func doAnsibleScaffold() {
 // repoPath field on generator is used primarily in generation of Go operator. For Ansible we will set it to cwd
 func repoPath() string {
 	// We only care about GOPATH constraint checks if we are a Go operator
-	wd := mustGetwd()
+	wd := cmdutil.MustGetwd()
 	if operatorType == goOperatorType {
 		gp := os.Getenv(gopath)
 		if len(gp) == 0 {
@@ -269,14 +269,6 @@ func verifyFlags() {
 			log.Fatalf("api-version has wrong format (%v); format must be $GROUP_NAME/$VERSION (e.g app.example.com/v1alpha1)", apiVersion)
 		}
 	}
-}
-
-func mustGetwd() string {
-	wd, err := os.Getwd()
-	if err != nil {
-		log.Fatalf("failed to determine the full path of the current directory: %v", err)
-	}
-	return wd
 }
 
 func execCmd(stdout *os.File, cmd string, args ...string) {

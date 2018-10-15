@@ -25,7 +25,6 @@ import (
 type OperatorType int
 
 const (
-	configYaml      = "./config/config.yaml"
 	gopkgToml       = "./Gopkg.toml"
 	buildDockerfile = "./build/Dockerfile"
 )
@@ -48,7 +47,7 @@ const (
 // MustInProjectRoot checks if the current dir is the project root and returns the current repo's import path
 // e.g github.com/example-inc/app-operator
 func MustInProjectRoot() {
-	// if the current directory has the "./cmd/manager/main.go" file, then it is safe to say
+	// if the current directory has the "./build/dockerfile" file, then it is safe to say
 	// we are at the project root.
 	_, err := os.Stat(buildDockerfile)
 	if err != nil && os.IsNotExist(err) {
