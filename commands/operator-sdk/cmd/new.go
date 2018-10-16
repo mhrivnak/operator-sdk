@@ -79,10 +79,6 @@ const (
 	ensureCmd           = "ensure"
 	goOperatorType      = "go"
 	ansibleOperatorType = "ansible"
-
-	defaultDirFileMode  = 0750
-	defaultFileMode     = 0644
-	defaultExecFileMode = 0755
 )
 
 func newFunc(cmd *cobra.Command, args []string) {
