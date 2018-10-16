@@ -18,26 +18,28 @@ import (
 	"io/ioutil"
 	"path/filepath"
 
+	"github.com/operator-framework/operator-sdk/pkg/scaffold"
 	"github.com/operator-framework/operator-sdk/pkg/scaffold/input"
 )
 
 // GalaxyInit - wrapper
 type GalaxyInit struct {
 	input.Input
-
-	Kind string
-	Dir  string
+	Resource scaffold.Resource
+	Dir      string
 }
 
 // GetInput - get input
 func (g *GalaxyInit) GetInput() (input.Input, error) {
-	if g.Path == "" {
+	if g.Dir == "" {
 		dir, err := ioutil.TempDir("", "osdk")
 		if err != nil {
-			return g.Input, err
+			return input.Input{}, err
 		}
-		g.Path = filepath.Join(dir, "galaxy_init.sh")
 		g.Dir = dir
+	}
+	if g.Path == "" {
+		g.Path = filepath.Join(g.Dir, "galaxy_init.sh")
 	}
 	g.TemplateBody = galaxyInitTmpl
 	g.IsExec = true
@@ -52,5 +54,5 @@ if ! which ansible-galaxy > /dev/null; then
 fi
 
 echo "Initializing role skeleton..."
-ansible-galaxy init --init-path={{.Input.AbsProjectPath}}/roles/ {{.Kind}}
+ansible-galaxy init --init-path={{.Input.AbsProjectPath}}/roles/ {{.Resource.Kind}}
 `

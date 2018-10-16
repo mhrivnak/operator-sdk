@@ -14,13 +14,15 @@
 
 package ansible
 
-import "github.com/operator-framework/operator-sdk/pkg/scaffold/input"
+import (
+	"github.com/operator-framework/operator-sdk/pkg/scaffold"
+	"github.com/operator-framework/operator-sdk/pkg/scaffold/input"
+)
 
 // Playbook - the playbook tmpl wrapper
 type Playbook struct {
 	input.Input
-
-	Kind string
+	Resource scaffold.Resource
 }
 
 // GetInput - gets the input
@@ -36,5 +38,5 @@ const playbookTmpl = `- hosts: localhost
   gather_facts: no
   tasks:
   - import_role:
-      name: "{{.Kind}}"
+      name: "{{.Resource.Kind}}"
 `

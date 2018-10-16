@@ -166,8 +166,14 @@ func doAnsibleScaffold() {
 	}
 
 	s := &scaffold.Scaffold{}
+	tmpdir, err := ioutil.TempDir("", "osdk")
+	if err != nil {
+		log.Fatal("unable to get temp directory")
+	}
+
 	galaxyInit := &ansible.GalaxyInit{
-		Kind: resource.Kind,
+		Resource: *resource,
+		Dir:      tmpdir,
 	}
 
 	err = s.Execute(cfg,
@@ -197,7 +203,7 @@ func doAnsibleScaffold() {
 	if generatePlaybook {
 		err := s.Execute(cfg,
 			&ansible.Playbook{
-				Kind: resource.Kind,
+				Resource: *resource,
 			},
 		)
 		if err != nil {
@@ -211,7 +217,10 @@ func doAnsibleScaffold() {
 	cmd.Stderr = os.Stderr
 	cmd.Run()
 	// Delete Galxy INIT
-	if err = os.RemoveAll(filepath.Join(galaxyInit.AbsProjectPath, "var")); err != nil {
+	// Mac OS tmp directory is /var/folders/_c/..... this means we have to make sure that we get the top level directory to remove
+	// everything.
+	tmpDirectorySlice := strings.Split(os.TempDir(), "/")
+	if err = os.RemoveAll(filepath.Join(galaxyInit.AbsProjectPath, tmpDirectorySlice[1])); err != nil {
 		log.Fatalf("failed to remove the galaxy init script")
 	}
 
@@ -316,7 +325,7 @@ func updateRoleForResource(r *scaffold.Resource, absProjectPath string) error {
 		return fmt.Errorf("failed to decode role manifest %v: %v", roleFilePath, err)
 	}
 	switch role := obj.(type) {
-	// TODO: use rbac/v1.
+	// TODO: handle cluster roles for operators to watch every namespace.
 	case *rbacv1.Role:
 		pr := &rbacv1.PolicyRule{}
 		apiGroupFound := false
