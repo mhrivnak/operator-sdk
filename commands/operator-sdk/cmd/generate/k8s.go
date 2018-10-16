@@ -27,10 +27,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const (
-	k8sGenerated = "./tmp/codegen/update-generated.sh"
-)
-
 func NewGenerateK8SCmd() *cobra.Command {
 	return &cobra.Command{
 		Use:   "k8s",

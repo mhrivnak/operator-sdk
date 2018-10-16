@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+DEST_IMAGE="quay.io/example/memcached-operator:v0.0.2"
+
 set -evx
 
 # switch to the "default" namespace if on openshift, to match the minikube test
@@ -20,8 +22,8 @@ cp -a ansible-memcached/memfin memcached-operator/roles/
 cat ansible-memcached/watches-finalizer.yaml >> memcached-operator/watches.yaml
 
 pushd memcached-operator
-operator-sdk build quay.io/example/memcached-operator:v0.0.2
-sed -i 's|REPLACE_IMAGE|quay.io/example/memcached-operator:v0.0.2|g' deploy/operator.yaml
+operator-sdk build $DEST_IMAGE
+sed -i "s|REPLACE_IMAGE|$DEST_IMAGE|g" deploy/operator.yaml
 sed -i 's|Always|Never|g' deploy/operator.yaml
 
 # deploy the operator
