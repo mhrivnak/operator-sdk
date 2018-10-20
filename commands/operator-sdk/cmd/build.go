@@ -152,13 +152,13 @@ func buildFunc(cmd *cobra.Command, args []string) {
 	if mainExists() {
 		managerDir := filepath.Join(cmdutil.CheckAndGetCurrPkg(), "cmd/manager")
 		outputBinName := filepath.Join(wd, "build/_output/bin", filepath.Base(wd))
+		fmt.Printf("building binary at %s\n", outputBinName)
 		buildCmd := exec.Command("go", "build", "-o", outputBinName, managerDir)
 		buildCmd.Env = goBuildEnv
 		o, err := buildCmd.CombinedOutput()
 		if err != nil {
 			log.Fatalf("failed to build operator binary: %v (%v)", err, string(o))
 		}
-		fmt.Printf("built binary at %s\n", outputBinName)
 		fmt.Fprintln(os.Stdout, string(o))
 	}
 
