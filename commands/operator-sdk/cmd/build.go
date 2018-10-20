@@ -158,6 +158,7 @@ func buildFunc(cmd *cobra.Command, args []string) {
 		if err != nil {
 			log.Fatalf("failed to build operator binary: %v (%v)", err, string(o))
 		}
+		fmt.Printf("built binary at %s\n", outputBinName)
 		fmt.Fprintln(os.Stdout, string(o))
 	}
 
