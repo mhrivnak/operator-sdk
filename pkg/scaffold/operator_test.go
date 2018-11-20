@@ -75,7 +75,7 @@ spec:
             exec:
               command:
                 - stat
-                - /tmp/operator-sdk-leader
+                - /tmp/operator-sdk-ready
             initialDelaySeconds: 4
             periodSeconds: 10
             failureThreshold: 1
@@ -121,7 +121,7 @@ spec:
             exec:
               command:
                 - stat
-                - /tmp/operator-sdk-leader
+                - /tmp/operator-sdk-ready
             initialDelaySeconds: 4
             periodSeconds: 10
             failureThreshold: 1

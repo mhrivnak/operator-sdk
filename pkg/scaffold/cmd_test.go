@@ -46,6 +46,7 @@ import (
 	"github.com/example-inc/app-operator/pkg/controller"
 	"github.com/operator-framework/operator-sdk/pkg/k8sutil"
 	"github.com/operator-framework/operator-sdk/pkg/leader"
+	"github.com/operator-framework/operator-sdk/pkg/ready"
 	sdkVersion "github.com/operator-framework/operator-sdk/version"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
@@ -89,18 +90,13 @@ func main() {
 	// Become the leader before proceeding
 	leader.Become(context.TODO(), "app-operator-lock")
 
-	// Create file for readiness probe
-	f, err := os.Create("/tmp/operator-sdk-leader")
+	r := ready.NewFileReady()
+	err = r.Set()
 	if err != nil {
 		log.Error(err, "")
 		os.Exit(1)
 	}
-	err = f.Close()
-	if err != nil {
-		log.Error(err, "")
-		os.Exit(1)
-	}
-	defer os.Remove(f.Name())
+	defer r.Unset()
 
 	// Create a new Cmd to provide shared dependencies and start components
 	mgr, err := manager.New(cfg, manager.Options{Namespace: namespace})
